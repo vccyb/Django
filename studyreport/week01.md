@@ -14,7 +14,7 @@
 
 3. 用`pip list` 命令 看是否安装成功
 
-
+------
 
 
 
@@ -66,7 +66,7 @@
 
 
 
-
+------
 
 
 
@@ -121,7 +121,7 @@ admin.site.register(Article) #修改
 
 `LANGUAGE_CODE = 'zh-Hans'`
 
-
+------
 
 
 
@@ -232,7 +232,7 @@ admin.site.register(Article) #修改
 
    > 可以对比上面的代码，简洁了不少
 
-
+------
 
 
 
@@ -287,6 +287,8 @@ admin.site.register(Article) #修改
    </html>
    ```
 
+------
+
 
 
 ### 总路由和app路由
@@ -319,3 +321,104 @@ admin.site.register(Article) #修改
    ```
 
    主要就是把app的代码分离开！
+
+------
+
+
+
+### 定制admin后台
+
+1. 在app的admin.py中
+
+   ```python
+   from django.contrib import admin
+   from .models import Article
+   @admin.register(Article)
+   class ArticleAdmin(admin.ModelAdmin):
+       list_display = ("id", "title", "content")
+       ordering = ("-id", ) # 一定要有逗号，必须要是元祖
+   #admin.site.register(Article, ArticleAdmin)
+   ```
+
+2. 补充models.py
+
+   ```python
+   ...
+   def __str__(self):
+   	return "<Article: %s>" % self.title
+   ```
+
+   在模型中写上，可以知道是什么模型
+
+------
+
+### 修改模型
+
+记住：修改模型需要更新数据库
+
+`python manage.py makemigrations`
+
+`python manage.py migrate`
+
+**字段要设置默认值**
+
+models.py 中给article添加新的字段
+
+```python
+...
+created_time = models.DateTimeField(auto_now_add=True)
+last_updated_time = models.DateTimeField(auto_now=True)
+```
+
+修改admin.py让其显示
+
+```python
+list_display = ("id", "title", "content", "created_time", "last_update_time")#添加了新的字段
+```
+
+执行数据库更新
+
+补充，如何让时间为亚洲时间
+
+在setting中修改Time_zone  想要admin汉化也可设置
+
+`TIME_ZONE = 'Asia/Shanghai'`    
+
+`LANGUAGE_CODE = 'zh-Hans'`
+
+
+
+给article添加多个字段 在app的models中修改
+
+```python
+from django.contrib.auth.models import User
+...   
+   author = models.ForeignKey(User, on_delete=models.DO_NOTHING, default=1)
+    is_deleted = models.BooleanField(default=False)
+    readed_num = models.IntegerField(default=0)
+```
+
+关于author 是用一个外键，因为我们删除文章肯定不要求删除作者
+
+is_deleted是判断一片文章是否删除，因为直接在数据库中删除是很危险的，所以用这种标识的方法
+
+
+
+修改admin
+
+`list_display = (... "author", "is_deleted", "created_time", "last_updated_time")`
+
+views中的article_list方法进行修改，因为删除后就不应该显示
+
+```python
+def article_list(request):
+    articles = Article.objects.filter(is_deleted=False) #从.all修改为filter
+    context = {}
+    context['articles'] = articles
+    return render_to_response( "article_list.html", context)
+```
+
+
+
+------
+
