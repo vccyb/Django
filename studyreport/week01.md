@@ -16,6 +16,8 @@
 
 
 
+
+
 #### 入门仪式 hello world
 
 1. 用django创建项目(创建到制定的目录) 
@@ -61,6 +63,67 @@
    2. `python manage.py createsuperuser`
 
 7. 进入admin管理网页127.0.0.1:8000/admin
+
+
+
+
+
+#### 创建app
+
+命令：`python manage.py starapp article` 创建了一个article的app
+
+创建模型： Article
+
+Article有两个属性 标题和内容 在article的app下的models.py
+
+```python
+from django.db import models
+class Article(models.Model):  #继承models.Model
+    title   = models.CharField(max_length=30) 
+    content = models.TextField()
+```
+
+**在django项目中注册应用** setting中
+
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    'article',  #注册app
+]
+```
+
+**同步数据库**
+
+`python manage.py makemigrations`
+
+`python manage.py migrate`
+
+**修改admin，让其在admin中显示**
+
+```python
+from django.contrib import admin
+from .models import Article #引入模型
+
+admin.site.register(Article) #修改
+```
+
+进入admin查看
+
+补充，改中文，进入全局设置setting中
+
+`LANGUAGE_CODE = 'zh-Hans'`
+
+
+
+
+
+
 
 
 
