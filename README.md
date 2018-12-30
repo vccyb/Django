@@ -1,6 +1,7 @@
 # Django
 #### 这是和ysh学习django的日志
 
+- 老师的[个人网站](http://yshblog.com/)  哔哩哔哩视频教程[网址](https://space.bilibili.com/252028233?spm_id_from=333.788.b_765f7570696e666f.1)
 - Django版本 2.1
 - python版本 3.7
 - 代码的编辑器用的是vscode
