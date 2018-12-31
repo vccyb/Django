@@ -415,5 +415,156 @@ def blog_list(request):
 ### 使用CSS美化页面
 
 1. 页面设计：一般从上到下： 导航栏 主题内容 尾注
-2. 
+
+2.  增加主页：
+
+   ```python
+   urlpatterns = [
+       path('', views.home ,name='home'),...]
+   ```
+
+3. 在mysite中增加views.py
+
+   ```python
+   from django.shortcuts import render_to_response
+   def home(request):
+       context = {}
+       return render_to_response('home.html', context)
+   ```
+
+4. 增加home模板
+
+   ```html
+   {% extends 'base.html' %}
+   {% block title %}
+       我的网站|首页
+   {% endblock%}
+   {% block content %}
+       <h3 class="home-content">欢迎访问我的网站</h3>
+   {% endblock %}
+   ```
+
+5. 使用CSS美化
+
+   - 首页美化
+
+     ```html
+     ...
+     {% block content %}
+         <h3 class="home-content">欢迎访问我的网站</h3>
+         <style type="text/css">
+             h3.home-content {
+                 font-size: 222%;
+                 position: absolute;
+                 left: 50%;
+                 top: 50%;
+                 transform: translate(-50%, -50%);
+             }
+         </style>
+     {% endblock %}
+     ```
+
+   - 导航栏美化
+
+     ```html
+         {% block content %}{% endblock %}
+         <style type="text/css">
+             body, *{
+                 margin: 0;
+                 padding: 0;
+             }
+     
+             div.nav{
+                 background-color: #eee;
+                 border-bottom: 1px solid #ccc;
+                 padding: 10px 5px;
+                 
+             }
+     
+             div.nav a{
+                 text-decoration: none;
+                 color: #000;
+                 padding: 5px 10px;
+             }
+     
+             a.logo {
+                 display: inline-block;
+             }        
+         </style>
+         ...
+     ```
+
+
+
+**使用静态文件**
+
+CSS文件 ，JS文件，图片
+
+在mysite创建 static文件夹
+
+在static中创建base.html和home.html
+
+在setting中设置
+
+已经有了
+
+```python
+STATIC_URL = '/static/'   #网络路由
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),    #设置静态文件的目录
+]
+```
+
+在home.html 和 base.html中加载静态文件
+
+home.html
+
+```html
+{% extends 'base.html' %}
+{% load staticfiles %}   <!-- 加载文件 -->
+
+{% block title %}
+    我的网站|首页
+{% endblock%}
+
+{% block header_extends %}
+    <link rel="stylesheet" href="{% static 'home.css' %}">  <!-- 外链样式表 -->
+{% endblock %}
+
+{% block content %}
+    <h3 class="home-content">欢迎访问我的网站</h3>
+{% endblock %}
+```
+
+base.html
+
+```html
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    {% block header_extends %}{% endblock %}
+</head>
+<body>
+    <div class="nav">
+        <a  class="logo"  href="{% url 'home' %}"> 
+            <h3>个人博客网站</h3>
+        </a>
+        <a href="/">首页</a>
+        <a href="{% url 'blog_list' %}">博客</a>
+    </div>   
+
+    {% block content %}{% endblock %}
+
+</body>
+</html>
+```
+
+
+
+------
 
