@@ -11,7 +11,7 @@
 
 - [**笔记01**](./studyreport/week01.md) 
 - [**笔记02**](./studyreport/week02.md)
-- [**笔记03**](.studyreport/week03.md)
+- [**笔记03**](./studyreport/week03.md)
 
 ​	
 
