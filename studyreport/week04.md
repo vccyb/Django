@@ -150,3 +150,45 @@ context['blog_types'] = BlogType.objects.annotate(blog_count=Count('blog'))
 
 
 
+### 博客阅读简单计数
+
+models.py增加readed_num
+
+```python
+readed_num = models.IntegerField(default=0)
+```
+
+admin 添加显示
+
+```python
+   list_display = ('title', 'blog_type', 'author','readed_num', 'created_time', 'last_updated_time')
+```
+
+简单的方法
+
+```python
+    blog = get_object_or_404(Blog, id=blog_pk)
+    blog.readed_num += 1 
+    blog.save()
+```
+
+在修改模板即可
+
+但是，这样出现一个问题，每次刷新就增加一次无论时间间隔
+
+改进方法：使用cookie
+
+```python
+def blog_detail(request, blog_pk):
+...
+if not request.COOKIES.get('blog_%s_readed' % blog_pk):
+    blog.readed_num += 1 
+    blog.save()
+response.set_cookie('blog_%s_readed' % blog_pk,'true')
+```
+
+
+
+### 博客阅读计数优化
+
+难点，还无思绪，暂无笔记
