@@ -51,7 +51,6 @@ def update_comment(request):
         comment.user = comment_form.cleaned_data['user']
         comment.text = comment_form.cleaned_data['text']
         comment.content_object = comment_form.cleaned_data['content_object']
-        comment.save()
 
         parent = comment_form.cleaned_data['parent']
         if not parent is None:
@@ -59,6 +58,10 @@ def update_comment(request):
             comment.parent = parent
             comment.reply_to = parent.user
         comment.save()
+
+        #发送邮件通知
+        comment.send_mail()
+
 
         # 返回数据
         data['status'] = 'SUCCESS'
