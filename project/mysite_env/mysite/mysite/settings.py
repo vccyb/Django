@@ -25,6 +25,7 @@ SECRET_KEY = 'cbl3*sj6#h80o1b9bp^k5e=-$)ndahuub6+%k$0v7xzdou5tp('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = []
 
 
@@ -177,9 +178,9 @@ CACHES = {
 # https://docs.djangoproject.com/en/2.0/ref/settings/#email
 # https://docs.djangoproject.com/en/2.0/topics/email/
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.qq.com'
+EMAIL_HOST = 'smtp.163.com'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = '1440161919@qq.com'
-EMAIL_HOST_PASSWORD = 'vgzqmhyrjocrgbfj'  # 授权码
+EMAIL_HOST_USER = '13170906656@163.com'
+EMAIL_HOST_PASSWORD = 'cyb1997'  # 授权码
 EMAIL_SUBJECT_PREFIX = '[陈宇博的博客] '
 EMAIL_USE_TLS = True  # 与SMTP服务器通信时，是否启动TLS链接(安全链接)
